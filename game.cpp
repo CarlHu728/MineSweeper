@@ -4,33 +4,14 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include <QTime>
-#include <iostream>
 
-Game::Game(LEVEL _level, size_t customRow, size_t customColumn, int customMineNum): level(_level) {
-    if (level == LEVEL::EASY) {
-        this->column = 9;
-        this->row = 9;
-        this->mineNum = 10;
-    } else if (level == LEVEL::MIDIUM) {
-        this->column = 16;
-        this->row = 16;
-        this->mineNum = 40;
-    } else if (level == LEVEL::HARD) {
-        this->column = 30;
-        this->row = 16;
-        this->mineNum = 99;
-    } else if (level == LEVEL::CUSTOM) {
-        this->column = customColumn;
-        this->row = customRow;
-        this->mineNum = qMin(customMineNum, int(this->row * this->column - 1));
-    }
-    this->map.resize(this->row, QVector<TYPE>(this->column, TYPE::UNCLICKED));
-    this->mine.resize(this->row, QVector<bool>(this->column, false));
-}
+Game::Game() {}
+Game::~Game() {}
+inline bool Game::IsValid(int x, int y) { return x >= 0 && x < this->row && y >= 0 && y < this->column; }
 
-inline bool Game::IsValid(int x, int y) { return x >= 0 && x <= this->row && y >= 0 && this->column; }
+inline bool Game::IsMine(int x, int y) { return this->mine[x][y]; }
 
-inline bool Game::IsMine(int x, int y) { return mine[x][y]; }
+inline bool Game::IsFlag(int x, int y) { return this->map[x][y] == TYPE::FLAG; }
 
 int Game::CountAdjacency(int x, int y, bool (Game::*Func)(int, int)) {
     int cnt = 0;
@@ -54,18 +35,40 @@ void Game::VisAdjacency(int x, int y, void (Game::*Func)(int, int)) {
     }
 }
 
-void Game::Start() {
+void Game::Start(LEVEL _level, int customRow, int customColumn, int customMineNum) {
+    this->level = _level;
     this->SetState(STATE::INGAME);
-    GenerateMine();
+    this->firstStep = true;
+    this->step = 0;
+    if (level == LEVEL::EASY) {
+        this->column = 9;
+        this->row = 9;
+        this->mineNum = 10;
+    } else if (level == LEVEL::MEDIUM) {
+        this->column = 16;
+        this->row = 16;
+        this->mineNum = 40;
+    } else if (level == LEVEL::HARD) {
+        this->column = 16;
+        this->row = 30;
+        this->mineNum = 99;
+    } else if (level == LEVEL::CUSTOM) {
+        this->column = qMax(qMin(customColumn, 75), 2);
+        this->row = qMax(qMin(customRow, 75), 2);
+        this->mineNum = qMax(qMin(customMineNum, this->row * this->column - 1), 1);
+    }
+    this->mineRemain = this->mineNum;
+    this->map = QVector<QVector<TYPE>>(this->row, QVector<TYPE>(this->column, TYPE::UNCLICKED));
+    this->mine = QVector<QVector<bool>>(this->row, QVector<bool>(this->column, false));
 }
 
-inline TYPE Game::GetType(int x, int y) {
-    if (!IsValid(x, y)) { return TYPE::NULLTYPE; }
+TYPE Game::GetType(int x, int y) {
+    if (!this->IsValid(x, y)) { return TYPE::NULLTYPE; }
     return this->map[x][y];
 }
 
 inline bool Game::SetType(int x, int y, TYPE newType) {
-    if (!IsValid(x, y)) { return false; }
+    if (!this->IsValid(x, y)) { return false; }
     this->map[x][y] = newType;
     return true;
 }
@@ -75,22 +78,36 @@ inline bool Game::SetState(STATE newState) {
     return true;
 }
 
-inline const QVector<QVector<TYPE>>& Game::GetMap() {
+const QVector<QVector<TYPE>>& Game::GetMap() {
     return this->map;
 }
 
+int Game::GetRow() {
+    return this->row;
+}
 
-inline Game::STATE Game::GetState() {
+int Game::GetColumn() {
+    return this->column;
+}
+
+
+STATE Game::GetState() {
     return this->state;
 }
 
 bool Game::Click(int x, int y) {
-    if (!IsValid(x, y)) { return false; }
+    if (!this->IsValid(x, y)) { return false; }
+    if (GetNum(x, y) != -1) { return false; }
+    if (this->firstStep) {
 
+
+        this->GenerateMine(x, y);
+        this->firstStep = false;
+    }
     auto dfs = [&](auto dfs, int curX, int curY) {
-        if (this->state == STATE::LOSE) { return; }
+        if (this->GetState() == STATE::LOSE) { return; }
         if (!this->IsValid(curX, curY)) { return; }
-        if (this->map[curX][curY] != TYPE::UNCLICKED) { return; }
+        if (this->GetType(curX, curY) != TYPE::UNCLICKED) { return; }
         if (IsMine(x, y)) {
             this->SetState(STATE::LOSE);
             return;
@@ -107,6 +124,7 @@ bool Game::Click(int x, int y) {
     };
 
     dfs(dfs, x, y);
+    ++step;
     return true;
 }
 
@@ -133,18 +151,19 @@ bool Game::CancelMark(int x, int y) {
         this->SetType(x, y, TYPE::UNCLICKED);
         return true;
     } else if (this->GetType(x, y) == TYPE::UNKNOWN) {
-        --this->mineRemain;
         this->SetType(x, y, TYPE::UNCLICKED);
         return true;
+    } else {
+        --this->mineRemain;
     }
     return false;
 }
 
 bool Game::RightClick(int x, int y) {
     if (!this->IsValid(x, y)) { return false; }
-    if (this->GetType(x, y) == TYPE::UNCLICKED) { return this->SetFlag(x, y); }
-    else if (this->GetType(x, y) == TYPE::FLAG) { return this->SetUnknown(x, y); }
-    else if (this->GetType(x, y) == TYPE::UNKNOWN) { return this->CancelMark(x, y); }
+    if (this->GetType(x, y) == TYPE::UNCLICKED) { ++step; return this->SetFlag(x, y); }
+    else if (this->GetType(x, y) == TYPE::FLAG) { ++step; return this->SetUnknown(x, y); }
+    else if (this->GetType(x, y) == TYPE::UNKNOWN) { ++step; return this->CancelMark(x, y); }
     return false;
 }
 
@@ -154,54 +173,57 @@ inline int Game::GetNum(int x, int y) {
     return int(this->GetType(x, y));
 }
 
+int Game::GetStep() {
+    return this->step;
+}
+
 bool Game::DoubleClick(int x, int y) {
     if (!this->IsValid(x, y)) { return false; }
     int num = GetNum(x, y);
     if (num == -1) { return false; }
-    int cnt = this->CountAdjacency(x, y, &Game::IsMine);
+    int cnt = this->CountAdjacency(x, y, &Game::IsFlag);
     if (cnt != num) { return false; }
     this->CountAdjacency(x, y, &Game::Click);
+    ++step;
     return true;
 }
 
-QHash<TYPE, char> to {
-    {TYPE::UNCLICKED, '.'},
-    {TYPE::FLAG, '!'},
-    {TYPE::ZERO, '0'},
-    {TYPE::ONE, '1'},
-    {TYPE::TWO, '2'},
-    {TYPE::THREE, '3'},
-    {TYPE::FOUR, '4'},
-    {TYPE::FIVE, '5'},
-    {TYPE::SIX, '6'},
-    {TYPE::SEVEN, '7'},
-    {TYPE::EIGHT, '8'},
-    {TYPE::UNKNOWN, '?'},
-    {TYPE::MINE, '*'},
-};
-
-void Game::GenerateMine() {
-    QRandomGenerator randP(QTime(0,0,0).secsTo(QTime::currentTime()));
+void Game::GenerateMine(int x, int y) {
+    QRandomGenerator randP(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     for (int i = 0; i < this->mineNum; i++) {
-        int newX = 0;
-        int newY = 0;
+        int newX = 0, newY = 0;
         do {
             newX = randP.generate() % this->row;
             newY = randP.generate() % this->column;
-        } while (this->GetType(newX, newY) == TYPE::MINE);
+        } while (this->IsMine(newX, newY) || (newX == x && newY == y));
         // std::cout << newX << " " << newY << std::endl;
         this->mine[newX][newY] = true;
-        // this->SetType(newX, newY, TYPE::MINE);
     }
 }
 
-void Game::Print() {
-    for (int i = 0; i < this->row; i ++) {
-        for (int j = 0; j < this->column; j ++) {
-            std::cout << to[this->GetType(i, j)];
+void Game::Check() {
+    for (int i = 0; i < this->GetRow(); i ++) {
+        for (int j = 0; j < this->GetColumn(); j ++) {
+            if (!IsMine(i, j) && this->GetType(i, j) == TYPE::UNCLICKED) { return; }
         }
-        std::cout << "\n";
     }
+    this->SetState(STATE::WIN);
 
-    std::cout << "end\n";
 }
+
+void Game::End() {
+    for (int i = 0; i < this->GetRow(); i ++) {
+        for (int j = 0; j < this->GetColumn(); j ++) {
+
+            if (!this->IsMine(i, j) && this->IsFlag(i, j)) {
+                this->SetType(i, j, TYPE::MINE_WRONG);
+            }
+            if (this->IsMine(i, j)) {
+                this->SetType(i, j, this->GetState() == STATE::WIN ? TYPE::MINE : TYPE::MINE_EXPLODE);
+            }
+        }
+    }
+}
+
+int Game::GetRemainMine()
+{ return this->mineRemain; }

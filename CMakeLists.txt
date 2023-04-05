@@ -21,6 +21,9 @@ set(PROJECT_SOURCES
         mainwindow.ui
         game.h
         game.cpp
+        dialog.h
+        dialog.cpp
+        dialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
