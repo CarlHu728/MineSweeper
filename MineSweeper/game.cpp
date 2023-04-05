@@ -120,7 +120,6 @@ bool Game::Click(int x, int y) {
             }
         }
     };
-
     dfs(dfs, x, y);
     ++step;
     return true;
@@ -202,7 +201,7 @@ void Game::GenerateMine(int x, int y) {
 void Game::Check() {
     for (int i = 0; i < this->GetRow(); i ++) {
         for (int j = 0; j < this->GetColumn(); j ++) {
-            if (!IsMine(i, j) && this->GetType(i, j) == TYPE::UNCLICKED) { return; }
+            if (!IsMine(i, j) && this->GetNum(i, j) == -1) { return; }
         }
     }
     this->SetState(STATE::WIN);
