@@ -1,0 +1,14 @@
+# ninja log v5
+0	430	1680746177684646420	MineSweeper_autogen/timestamp	73ac31db9cbf62bc
+0	430	1680746177684646420	MineSweeper_autogen/mocs_compilation.cpp	73ac31db9cbf62bc
+0	430	1680746177684646420	/Users/carlhu/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_0_Xcode_64_bit-Debug/MineSweeper_autogen/timestamp	73ac31db9cbf62bc
+0	430	1680746177684646420	/Users/carlhu/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_0_Xcode_64_bit-Debug/MineSweeper_autogen/mocs_compilation.cpp	73ac31db9cbf62bc
+430	461	1680746177727910988	MineSweeper_autogen/EWIEGA46WW/qrc_image.cpp	48c3a906017daef2
+430	461	1680746177727910988	/Users/carlhu/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_0_Xcode_64_bit-Debug/MineSweeper_autogen/EWIEGA46WW/qrc_image.cpp	48c3a906017daef2
+463	567	1680746177832140141	CMakeFiles/MineSweeper.dir/MineSweeper_autogen/EWIEGA46WW/qrc_image.cpp.o	e2571e3db6b75034
+462	2520	1680746179773918537	CMakeFiles/MineSweeper.dir/main.cpp.o	698f47a122a40a64
+461	2608	1680746179862802749	CMakeFiles/MineSweeper.dir/MineSweeper_autogen/mocs_compilation.cpp.o	ab7a7f1c5f7ec5f8
+462	2627	1680746179883576957	CMakeFiles/MineSweeper.dir/dialog.cpp.o	e20526be225ff7a
+462	2673	1680746179930166070	CMakeFiles/MineSweeper.dir/game.cpp.o	c34acaa65a8bcafe
+462	2878	1680746180134464369	CMakeFiles/MineSweeper.dir/mainwindow.cpp.o	4c03a88a45e12ea0
+2878	3046	1680746180310187372	MineSweeper.app/Contents/MacOS/MineSweeper	4fc21733c1294574

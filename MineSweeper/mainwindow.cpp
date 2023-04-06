@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     StartGame();
-    fame.load("source.png");
+    fame.load(":/img/source.png");
 }
 
 MainWindow::~MainWindow()
