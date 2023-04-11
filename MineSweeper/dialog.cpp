@@ -19,7 +19,7 @@ void Dialog::on_InputColumn_valueChanged(int arg1)
 {
     int col = ui->InputColumn->value();
     int row = ui->InputRow->value();
-    ui->InputMine->setMaximum(col * row - 1);
+    ui->InputMine->setMaximum(col * row * 0.9);
 }
 
 
@@ -27,7 +27,7 @@ void Dialog::on_InputRow_valueChanged(int arg1)
 {
     int col = ui->InputColumn->value();
     int row = ui->InputRow->value();
-    ui->InputMine->setMaximum(col * row - 1);
+    ui->InputMine->setMaximum(col * row * 0.9);
 }
 
 void Dialog::GetValue(int &getColumn, int& getRow, int& getMineNum) {

@@ -45,7 +45,7 @@
     <number>9</number>
    </property>
    <property name="maximum">
-    <number>60</number>
+    <number>24</number>
    </property>
    <property name="value">
     <number>9</number>
@@ -64,7 +64,7 @@
     <number>9</number>
    </property>
    <property name="maximum">
-    <number>60</number>
+    <number>30</number>
    </property>
    <property name="value">
     <number>9</number>
@@ -80,7 +80,7 @@
     </rect>
    </property>
    <property name="minimum">
-    <number>1</number>
+    <number>10</number>
    </property>
    <property name="maximum">
     <number>80</number>

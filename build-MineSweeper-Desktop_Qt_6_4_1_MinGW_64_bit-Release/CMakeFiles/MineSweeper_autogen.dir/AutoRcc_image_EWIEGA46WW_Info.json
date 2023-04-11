@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release/MineSweeper_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/MineSweeper",
+	"CMAKE_SOURCE_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/MineSweeper",
+	"INCLUDE_DIR" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release/MineSweeper_autogen/include",
+	"INPUTS" : [ "C:/Users/Carl/Documents/GitHub/MineSweeper/MineSweeper/source.png" ],
+	"LOCK_FILE" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release/CMakeFiles/MineSweeper_autogen.dir/AutoRcc_image_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "image" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_image.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.4.1/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/Carl/Documents/GitHub/MineSweeper/build-MineSweeper-Desktop_Qt_6_4_1_MinGW_64_bit-Release/CMakeFiles/MineSweeper_autogen.dir/AutoRcc_image_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/Carl/Documents/GitHub/MineSweeper/MineSweeper/image.qrc",
+	"VERBOSITY" : 0
+}

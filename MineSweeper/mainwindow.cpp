@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    StartGame();
+    StartLocalGame();
     fame.load(":/img/source.png");
 }
 
@@ -21,12 +21,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::StartGame() {
+void MainWindow::StartLocalGame() {
     firstClick = true;
     time = 0;
-    this->timer = new QTimer;
+    timer = new QTimer;
     myGame.Start(level, customRow, customColumn, customMineNum);
-    ui->RestartButton->setText(":)");
+    SetWindow();
+}
+
+void MainWindow::StartOnlineGame() {
+    if (isHost) {
+        myGame.newRoom();
+    } else {
+        myGame.joinRoom(roomCode);
+    }
+}
+
+void MainWindow::SetWindow() {
     W = 50 + myGame.GetRow() * 20;
     H = 100 + myGame.GetColumn() * 20;
     ui->RestartButton->setGeometry(W / 2 - 15, 10, 30, 30);
@@ -34,7 +45,6 @@ void MainWindow::StartGame() {
     ui->TimeCountLabel->setGeometry(W / 4 * 3 - 30, 10, 60, 30);
     setFixedSize(W, H);
     update();
-
 }
 
 void MainWindow::TimeOut() {
@@ -75,25 +85,25 @@ void MainWindow::Draw() {
 
 void MainWindow::on_RestartButton_clicked()
 {
-    StartGame();
+    StartLocalGame();
 }
 
 void MainWindow::on_actionEasy_triggered()
 {
     level = LEVEL::EASY;
-    StartGame();
+    StartLocalGame();
 }
 
 void MainWindow::on_actionMedium_triggered()
 {
     level = LEVEL::MEDIUM;
-    StartGame();
+    StartLocalGame();
 }
 
 void MainWindow::on_actionHard_triggered()
 {
     level = LEVEL::HARD;
-    StartGame();
+    StartLocalGame();
 }
 
 void MainWindow::on_actionCustom_triggered()
@@ -102,7 +112,7 @@ void MainWindow::on_actionCustom_triggered()
     if (dialog->exec() == QDialog::Accepted) {
         dialog->GetValue(customRow, customColumn, customMineNum);
         level = LEVEL::CUSTOM;
-        StartGame();
+        StartLocalGame();
     }
 }
 
@@ -124,7 +134,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         }
     }
     Draw();
-    ui->RestartButton->setText(":]");
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -139,11 +148,18 @@ void MainWindow::mouseDoubleClickEvent(QMouseEvent *event) {
         myGame.DoubleClick(x, y);
     }
     Draw();
-    ui->RestartButton->setText(":]");
 }
 
 void MainWindow::on_actionAbout_triggered()
 {
+
+}
+
+void MainWindow::on_actionExit_room_triggered()
+{
+    if (!myGame.exitRoom()) {
+
+    }
 
 }
 

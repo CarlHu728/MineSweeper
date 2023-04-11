@@ -17,14 +17,16 @@ class MainWindow : public QMainWindow
 public:
     Game myGame;
 
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void StartGame();
+    void StartLocalGame();
+    void StartOnlineGame();
+
     void paintEvent(QPaintEvent *);
     void Draw();
     void TimeOut();
+    void SetWindow();
     bool firstClick;
 
 private slots:
@@ -44,9 +46,13 @@ private slots:
 
     void mouseReleaseEvent(QMouseEvent *event);
 
-
-
     void on_actionAbout_triggered();
+
+    void on_actionCreate_new_room_triggered();
+
+    void on_actionJoin_a_room_triggered();
+
+    void on_actionExit_room_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -56,6 +62,14 @@ private:
     int customMineNum = 10;
     QPixmap fame;
     QTimer* timer;
+
+    bool isOnline;
+    bool isHost;
+    int roomCode;
+
+
+
+
     int time = 0;
 };
 #endif // MAINWINDOW_H

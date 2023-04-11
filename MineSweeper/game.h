@@ -19,6 +19,9 @@ private:
     int mineNum, mineRemain;
     int step;
     bool firstStep;
+    bool isOnline;
+    bool isHost;
+    int roomCode;
 
     inline bool IsValid(int x, int y);
     inline bool IsFlag(int x, int y);
@@ -47,11 +50,15 @@ public:
     int GetRow();
     int GetColumn();
 
-    void Start(LEVEL _level, int customRow = 9,
+    void Start(LEVEL level, int customRow = 9,
                int customColumn = 9, int customMineNum = 10);
+    void SetOnlineState(bool isOnline, bool isHost = -1, int roomCode = -1);
     bool Click(int x, int y);
     bool RightClick(int x, int y);
     bool DoubleClick(int x, int y);
+    int newRoom();
+    bool joinRoom(int roomCode);
+    bool exitRoom();
     void Check();
     void End();
 };

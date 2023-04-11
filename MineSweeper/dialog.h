@@ -19,7 +19,6 @@ public:
     int row = 9;
     int mineNum = 10;
     void GetValue(int &getColumn, int& getRow, int& getMineNum);
-    // std::tuple<bool, int, int, int> exec() override;
 
 private slots:
     void on_InputColumn_valueChanged(int arg1);

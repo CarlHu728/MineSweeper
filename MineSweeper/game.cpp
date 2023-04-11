@@ -35,8 +35,8 @@ void Game::VisAdjacency(int x, int y, void (Game::*Func)(int, int)) {
     }
 }
 
-void Game::Start(LEVEL _level, int customRow, int customColumn, int customMineNum) {
-    this->level = _level;
+void Game::Start(LEVEL level, int customRow, int customColumn, int customMineNum) {
+    this->level = level;
     this->SetState(STATE::INGAME);
     this->firstStep = true;
     this->step = 0;
@@ -60,6 +60,18 @@ void Game::Start(LEVEL _level, int customRow, int customColumn, int customMineNu
     this->mineRemain = this->mineNum;
     this->map = QVector<QVector<TYPE>>(this->row, QVector<TYPE>(this->column, TYPE::UNCLICKED));
     this->mine = QVector<QVector<bool>>(this->row, QVector<bool>(this->column, false));
+}
+
+void Game::SetOnlineState(bool isOnline, bool isHost, int roomCode) {
+    this->isOnline = isOnline;
+    this->isHost = isHost;
+    this->roomCode = roomCode;
+    if (!isOnline) { return; }
+    if (isHost) {
+
+    } else {
+
+    }
 }
 
 TYPE Game::GetType(int x, int y) {
