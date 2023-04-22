@@ -123,8 +123,25 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuOnline">
+    <property name="title">
+     <string>Online</string>
+    </property>
+    <addaction name="actionCreate_new_room"/>
+    <addaction name="actionJoin_a_room"/>
+    <addaction name="actionExit_room"/>
+   </widget>
+   <widget class="QMenu" name="menuNew_Game">
+    <property name="title">
+     <string>New Game</string>
+    </property>
+    <addaction name="actionLocal"/>
+    <addaction name="actionOnline"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
+   <addaction name="menuOnline"/>
+   <addaction name="menuNew_Game"/>
   </widget>
   <action name="actionEasy">
    <property name="checkable">
@@ -161,6 +178,31 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionCreate_new_room">
+   <property name="text">
+    <string>Create new room</string>
+   </property>
+  </action>
+  <action name="actionJoin_a_room">
+   <property name="text">
+    <string>Join a room</string>
+   </property>
+  </action>
+  <action name="actionExit_room">
+   <property name="text">
+    <string>Exit room</string>
+   </property>
+  </action>
+  <action name="actionLocal">
+   <property name="text">
+    <string>Local</string>
+   </property>
+  </action>
+  <action name="actionOnline">
+   <property name="text">
+    <string>Online</string>
    </property>
   </action>
  </widget>
